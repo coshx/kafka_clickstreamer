@@ -1,0 +1,24 @@
+.subtitle {
+  font-family: 'Fira Sans', sans-serif;
+  color: #222222;
+  margin-left: 5%;
+}
+
+.header {
+  width:100%;
+  height: auto;
+  background-color: #003A73;
+  color: #FFF !important;
+  padding: 2% 0;
+  margin: 0 auto;
+  margin-bottom: 2%;
+}
+
+
+.submit {
+  height: 40px !important;
+  border-radius: 3px !important;
+  margin-left: 4%;
+  margin-top: 3%;
+  z-index: 101;
+}

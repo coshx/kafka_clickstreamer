@@ -1,0 +1,78 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Kafka/Spark Click Streamer">
+    <link rel="stylesheet" href="clickstreamer.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:300,400" rel="stylesheet">
+  </head>
+  <body>
+
+    <script type="text/javascript">
+      var submitForm = function() {
+        var subtitleHash = function(subtitle) {
+          var group = "." + subtitle + " .form-group";
+          var items = $(group);
+          var subHash = {};
+          for(var i=0; i<items.length;i++) {
+            var key = $(items[i]).children().attr("for");
+            var value = $(items[i]).children().children().val();
+            subHash[key] = value;
+          }
+          return subHash;
+        };
+
+        $(".submit").click(function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+              url: "http://localhost:8000",
+              data: JSON.stringify(submitForm()),
+              success: function(response) {
+                console.log('Posting data succeeded.');
+                console.log('submitForm() sent over', submitForm());
+                player_data = response;
+              },
+              error: function() {
+                console.log('Posting data failed.')
+                console.log('submitForm() sent over', submitForm())
+              }
+          });
+        });
+      };
+    </script>
+
+    <div class="header">
+      Clickstreamer
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 user1">
+        User 1
+        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
+          Stream 1
+        </button>
+        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
+          Stream 2
+        </button>
+      </div>
+      <div class="col-md-6 user2">
+        User 2
+        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
+          Stream 1
+        </button>
+        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
+          Stream 2
+        </button>
+      </div>
+    </div>
+
+  </body>
+</html>
