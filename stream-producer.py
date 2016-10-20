@@ -10,9 +10,10 @@ from tornado.options import define, options, parse_command_line
 define("port", default=8000, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
 
-client = KafkaClient(hosts="127.0.0.1:9092", use_greenlets=True)
+# Connect to Kafka instance
+client = KafkaClient(hosts="127.0.0.1:9092")
 topic = client.topics['test']
-producer = topic.get_sync_producer()
+producer = topic.get_producer()
 
 class MainHandler(tornado.web.RequestHandler):
 
@@ -21,7 +22,6 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Origin', '*')
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
         self.set_header('Access-Control-Max-Age', 1000)
-        #self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
         self.set_header('Access-Control-Allow-Headers', '*')
         self.set_header('Content-type', 'application/json')
 
@@ -35,8 +35,9 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         """Forward message to Kafka."""
         data = self.request.body
-        # data = json.loads(self.request.body.decode('utf-8'))
+        print json.loads(self.request.body.decode('utf-8'))
         producer.produce(data)
+        self.write(json.dumps('{}'))
         self.finish()
 
 def make_app():

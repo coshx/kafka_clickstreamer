@@ -22,5 +22,34 @@ Installing with [Anaconda](http://conda.pydata.org/docs/installation.html) is th
   1. Use `conda env create -f environment.yml` to install the Python dependencies for the backend. This will create a `conda` environment called `kafka`.
   1. Activate the `kafka` environment using `source activate kafka` on Linux/OS X or `activate kafka` on Windows. You can deactivate the conda environment using `source deactivate` on Linux/OS X or `deactivate` on Windows.
 
-## Usage
-With `pykafka` installed using one of the methods above, open up `clickstreamer.html` to get started.
+### Run ZooKeeper and a Kafka Broker
+[Download](http://kafka.apache.org/downloads) the Kafka tarball and untar it.
+
+```bash
+tar -xzf kafka_<my-kafka-version>.tgz
+```
+
+Next, launch a ZooKeeper configuration server.
+
+```bash
+cd kafka_<my-kafka-version>
+bin/zookeeper-server-start.sh config/zookeeper.properties  # 1st terminal session
+```
+
+Now, launch a Kafka message broker in another terminal window.
+
+```bash
+bin/kafka-server-start.sh config/server.properties  # 2nd terminal session
+```
+
+At this point you should have two terminal windows: one with ZooKeeper running on `localhost:2181` and another with the Kafka Broker, likely running on `localhost:9092`. After making sure that you have `pykafka` installed using one of the methods above, run the producer and the consumer in separate terminal sessions.
+
+```bash
+python producer.py  # 3rd terminal session
+```
+
+```bash
+python consumer.py # 4th terminal session
+```
+
+You should see messages flowing between the producer and consumer.
