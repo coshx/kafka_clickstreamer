@@ -16,63 +16,63 @@
   <body>
 
     <script type="text/javascript">
-      var submitForm = function() {
-        var subtitleHash = function(subtitle) {
-          var group = "." + subtitle + " .form-group";
-          var items = $(group);
-          var subHash = {};
-          for(var i=0; i<items.length;i++) {
-            var key = $(items[i]).children().attr("for");
-            var value = $(items[i]).children().children().val();
-            subHash[key] = value;
-          }
-          return subHash;
-        };
-
-        $(".submit").click(function(e) {
-          e.preventDefault();
+      $(document).ready(function() {
+        $("button").click(function(e) {
           $.ajax({
             type: "POST",
-              url: "http://localhost:8000",
-              data: JSON.stringify(submitForm()),
-              success: function(response) {
-                console.log('Posting data succeeded.');
-                console.log('submitForm() sent over', submitForm());
-                player_data = response;
-              },
-              error: function() {
-                console.log('Posting data failed.')
-                console.log('submitForm() sent over', submitForm())
-              }
+            url: "http://localhost:8000",
+            data: JSON.stringify(e.target.id),
+            success: function(response) {
+              console.log('Posting data succeeded.');
+            },
+            error: function(error) {
+              console.log('Posting data failed.');
+              console.log(error);
+            }
           });
         });
-      };
+      });
     </script>
 
     <div class="header">
       Clickstreamer
     </div>
 
-    <div class="row">
-      <div class="col-md-6 user1">
-        User 1
-        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
-          Stream 1
-        </button>
-        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
-          Stream 2
-        </button>
-      </div>
-      <div class="col-md-6 user2">
-        User 2
-        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
-          Stream 1
-        </button>
-        <button class="btn btn-default rules-button" data-target=".bs-example-modal-lg">
-          Stream 2
-        </button>
+    <div class="container-fluid">
+      <div class="clickstreams">
+        <div class="row">
+
+          <div class="col-md-6 user1">
+            <div class="row">
+              User 1
+            </div>
+            <div class="row">
+              <button id ="u1stream1" class="btn btn-default">
+                Stream 1
+              </button>
+              <button id ="u1stream2" class="btn btn-default">
+                Stream 2
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-6 user2">
+            <div class="row">
+              User 2
+            </div>
+            <div class="row">
+              <button id ="u2stream1" class="btn btn-default">
+                Stream 1
+              </button>
+              <button id ="u2stream2" class="btn btn-default">
+                Stream 2
+              </button>
+            </div>
+          </div>
+
+
+        </div>
       </div>
     </div>
-
   </body>
 </html>
