@@ -15,9 +15,10 @@ client = KafkaClient(hosts="127.0.0.1:9092")
 topic = client.topics['test']
 producer = topic.get_producer()
 
-class MainHandler(tornado.web.RequestHandler):
 
-    """Handles post requests by responding with a JSON file."""
+class MainHandler(tornado.web.RequestHandler):
+    """Handles POST requests by producing messages to a Kafka topic."""
+
     def set_default_headers(self):
         self.set_header('Access-Control-Allow-Origin', '*')
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
@@ -33,17 +34,18 @@ class MainHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def post(self):
-        """Forward message to Kafka."""
+        """Forward contents of POST requests to Kafka."""
         data = self.request.body
         print json.loads(self.request.body.decode('utf-8'))
         producer.produce(data)
         self.write(json.dumps('{}'))
         self.finish()
 
+
 def make_app():
     tornado.options.parse_command_line()
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r"/", MainHandler)
     ])
 
 
