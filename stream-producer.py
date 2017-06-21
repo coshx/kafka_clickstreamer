@@ -12,7 +12,7 @@ define("debug", default=False, help="run in debug mode")
 
 # Connect to Kafka instance
 client = KafkaClient(hosts="127.0.0.1:9092")
-topic = client.topics['test']
+topic = client.topics[b'test']
 producer = topic.get_producer()
 
 class MainHandler(tornado.web.RequestHandler):
@@ -35,7 +35,7 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         """Forward message to Kafka."""
         data = self.request.body
-        print json.loads(self.request.body.decode('utf-8'))
+        print(json.loads(self.request.body.decode('utf-8')))
         producer.produce(data)
         self.write(json.dumps('{}'))
         self.finish()
